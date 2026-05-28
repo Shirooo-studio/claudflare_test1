@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hello World</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ① グラデーション背景が色変化 */
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2, #f64f59, #c471ed);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: sans-serif;
+    }
+
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ② 浮かぶ泡 */
+    .bubbles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -100px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      animation: floatUp linear infinite;
+    }
+
+    .bubble:nth-child(1)  { width: 40px;  height: 40px;  left: 10%; animation-duration: 7s;  animation-delay: 0s; }
+    .bubble:nth-child(2)  { width: 20px;  height: 20px;  left: 25%; animation-duration: 5s;  animation-delay: 1s; }
+    .bubble:nth-child(3)  { width: 60px;  height: 60px;  left: 40%; animation-duration: 9s;  animation-delay: 2s; }
+    .bubble:nth-child(4)  { width: 30px;  height: 30px;  left: 55%; animation-duration: 6s;  animation-delay: 0.5s; }
+    .bubble:nth-child(5)  { width: 50px;  height: 50px;  left: 70%; animation-duration: 8s;  animation-delay: 3s; }
+    .bubble:nth-child(6)  { width: 25px;  height: 25px;  left: 85%; animation-duration: 5.5s; animation-delay: 1.5s; }
+    .bubble:nth-child(7)  { width: 15px;  height: 15px;  left: 5%;  animation-duration: 4.5s; animation-delay: 2.5s; }
+    .bubble:nth-child(8)  { width: 45px;  height: 45px;  left: 60%; animation-duration: 10s; animation-delay: 0s; }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(0) scale(1);   opacity: 0.6; }
+      80%  { opacity: 0.3; }
+      100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+    }
+
+    /* ③ 波 */
+    .waves {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      pointer-events: none;
+    }
+
+    .wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 200%;
+      height: 100%;
+      animation: waveMove linear infinite;
+    }
+
+    .wave-1 {
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='rgba(255,255,255,0.2)' d='M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x bottom;
+      background-size: 50% 100%;
+      animation-duration: 6s;
+    }
+
+    .wave-2 {
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='rgba(255,255,255,0.12)' d='M0,40 C480,100 960,0 1440,50 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x bottom;
+      background-size: 50% 100%;
+      animation-duration: 9s;
+      animation-direction: reverse;
+    }
+
+    @keyframes waveMove {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* コンテンツ */
+    .content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .content h1 {
+      font-size: clamp(2rem, 8vw, 5rem);
+      letter-spacing: 0.05em;
+    }
+
+    .content p {
+      margin-top: 1rem;
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      opacity: 0.85;
+    }
+
+    /* JS 動作確認ボタン */
+    .btn {
+      margin-top: 2rem;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #764ba2;
+      background: #fff;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .counter {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    /* トースト通知 */
+    .toast {
+      position: fixed;
+      bottom: 140px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(255,255,255,0.95);
+      color: #764ba2;
+      font-weight: bold;
+      padding: 0.6rem 1.6rem;
+      border-radius: 999px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ② 泡 -->
+  <div class="bubbles">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+
+  <!-- コンテンツ -->
+  <div class="content">
+    <h1>Hello, World!</h1>
+    <p>Cloudflare Pages へデプロイ用サンプル</p>
+    <button class="btn" id="btn">クリックしてね</button>
+    <p class="counter" id="counter">クリック回数: 0</p>
+  </div>
+
+  <!-- トースト -->
+  <div class="toast" id="toast">JavaScript 動いてます！</div>
+
+  <!-- ③ 波 -->
+  <div class="waves">
+    <div class="wave wave-1"></div>
+    <div class="wave wave-2"></div>
+  </div>
+
+  <script>
+    const btn = document.getElementById('btn');
+    const counter = document.getElementById('counter');
+    const toast = document.getElementById('toast');
+    let count = 0;
+    let toastTimer;
+
+    btn.addEventListener('click', () => {
+      count++;
+      counter.textContent = `クリック回数: ${count}`;
+
+      clearTimeout(toastTimer);
+      toast.classList.add('show');
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+    });
+  </script>
+</body>
+</html>
